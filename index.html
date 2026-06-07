@@ -1234,7 +1234,16 @@
       transform: translateY(-1px);
       box-shadow: 0 4px 14px rgba(28, 43, 74, 0.16);
     }
-    
+
+    .module-open-btn svg {
+      opacity: 0.78;
+      transition: var(--transition);
+    }
+
+    .module-open-btn:hover svg {
+      opacity: 1;
+    }
+
     /* Secondary: Podcast + Mind Map row */
     .module-resource-row {
       display: grid;
@@ -2023,11 +2032,12 @@
       <path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
         stroke-linejoin="round" />
     </symbol>
-    <symbol id="s-external" viewBox="0 0 14 14">
-      <path d="M6 3H3a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V8" stroke="currentColor" stroke-width="1.4"
-        stroke-linecap="round" />
-      <path d="M8.5 2H12v3.5M12 2L7 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+    <symbol id="s-external" viewBox="0 0 16 16">
+      <rect x="3.5" y="5.5" width="7" height="7" rx="1.6" fill="none" stroke="currentColor" stroke-width="1.35"
+        opacity="0.72" />
+      <path d="M8.5 3.5H12.5V7.5" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round"
         stroke-linejoin="round" />
+      <path d="M12.25 3.75L7.25 8.75" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" />
     </symbol>
     <symbol id="s-x" viewBox="0 0 14 14">
       <path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
