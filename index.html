@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!-- ═══════════════════════════════════════════════════════════════
      APTUM SUITE HUB CONFIGURATION
      ─────────────────────────────────────────────────────────────
@@ -14,12 +15,11 @@
      Mind maps:         NotebookLM public artifact links on each module card
      Mobile standard:   No horizontal overflow; mobile filter uses select dropdown
      Method notes:      Modal opened from Method section and footer
-     
+
      TODO:
      Update SVG module icons across the full Aptum module suite so they match
      the hub icon system used here.
 ════════════════════════════════════════════════════════════════ -->
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -80,7 +80,7 @@
     .top-bar {
       position: sticky;
       top: 0;
-      z-index: 200;
+      z-index: 300;
       background: rgba(255, 255, 255, 0.97);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
@@ -92,6 +92,7 @@
     }
 
     .top-bar-inner {
+      position: relative;
       max-width: 1200px;
       margin: 0 auto;
       height: 64px;
@@ -185,9 +186,115 @@
       box-shadow: 0 4px 16px rgba(28, 43, 74, 0.24) !important;
     }
 
+    .mobile-menu-btn {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--card);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 4px;
+      transition: var(--transition);
+      flex-shrink: 0;
+      box-shadow: var(--shadow);
+    }
+
+    .mobile-menu-btn:hover {
+      border-color: rgba(28, 43, 74, 0.22);
+      box-shadow: var(--shadow);
+    }
+
+    .mobile-menu-btn span {
+      width: 17px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--navy);
+      display: block;
+    }
+
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 64px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 240;
+      background: rgba(28, 43, 74, 0.28);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+
+    .mobile-menu-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-menu-panel {
+      position: fixed;
+      top: 64px;
+      right: 0;
+      bottom: 0;
+      width: min(320px, 86vw);
+      background: rgba(255, 255, 255, 0.99);
+      border-left: 1px solid var(--border);
+      box-shadow: -14px 0 36px rgba(28, 43, 74, 0.16);
+      padding: 14px;
+      z-index: 260;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transform: translateX(105%);
+      transition: transform 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-menu-panel.open {
+      transform: translateX(0);
+    }
+
+    .mobile-menu-panel a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--navy);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .mobile-menu-panel a:hover {
+      background: var(--bg);
+    }
+
+    .mobile-menu-panel .mobile-menu-cta {
+      margin-top: 6px;
+      background: var(--navy);
+      color: white;
+      box-shadow: 0 3px 14px rgba(28, 43, 74, 0.16);
+    }
+
+    .mobile-menu-panel .mobile-menu-cta:hover {
+      background: var(--navy-mid);
+    }
+
+    body.mobile-menu-open {
+      overflow: hidden;
+    }
+
     @media(max-width:860px) {
       .top-nav {
         display: none;
+      }
+
+      .mobile-menu-btn {
+        display: flex;
       }
     }
 
@@ -620,6 +727,10 @@
     /* ── SECTION SPACING ──────────────────────────────── */
     .section {
       padding: 68px 0;
+    }
+
+    section[id] {
+      scroll-margin-top: 0px;
     }
 
     .section+.section {
@@ -1757,67 +1868,81 @@
       font-weight: 700;
     }
 
-    /* ── AUDIO MODAL ──────────────────────────────────── */
-    .audio-modal-overlay {
+    /* ── AUDIO DOCK ───────────────────────────────────── */
+    .audio-dock {
       position: fixed;
-      inset: 0;
-      background: rgba(28, 43, 74, 0.52);
-      backdrop-filter: blur(4px);
-      z-index: 500;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%) translateY(120%);
+      z-index: 480;
+      width: min(620px, calc(100vw - 28px));
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 12px 44px rgba(28, 43, 74, 0.22);
+      padding: 14px 16px;
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .audio-modal-overlay.open {
-      display: flex;
+    .audio-dock.open {
+      transform: translateX(-50%) translateY(0);
     }
 
-    .audio-modal-panel {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: 0 16px 64px rgba(28, 43, 74, 0.28);
-      max-width: 500px;
-      width: 100%;
-      animation: modalIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
-    }
-
-    .audio-modal-header {
+    .audio-dock-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      margin-bottom: 10px;
     }
 
-    .audio-modal-title {
-      font-size: 15px;
+    .audio-dock-title {
+      font-size: 13.5px;
       font-weight: 700;
       color: var(--navy);
       line-height: 1.3;
     }
 
-    .audio-modal-sub {
-      font-size: 12px;
+    .audio-dock-sub {
+      font-size: 11.5px;
       color: var(--muted);
+      margin-top: 1px;
     }
 
-    .audio-modal-body {
-      padding: 22px 24px;
+    .audio-dock-close {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .audio-dock-close:hover {
+      background: var(--border);
+      color: var(--navy);
     }
 
     .audio-player {
       width: 100%;
-      height: 42px;
+      height: 38px;
       accent-color: var(--teal);
+      display: block;
     }
 
-    .audio-modal-note {
-      font-size: 12.5px;
-      color: var(--muted-light);
-      margin-top: 10px;
-      font-style: italic;
+    @media(max-width:520px) {
+      .audio-dock {
+        bottom: 10px;
+        width: calc(100vw - 20px);
+        padding: 12px;
+        border-radius: 14px;
+      }
     }
 
     /* ── FOOTER ───────────────────────────────────────── */
@@ -2156,8 +2281,27 @@
           </svg>
         </a>
       </nav>
+
+      <button class="mobile-menu-btn" type="button" onclick="toggleMobileMenu()" aria-label="Open section menu"
+        aria-expanded="false" aria-controls="mobileMenuPanel">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
     </div>
   </header>
+
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()"></div>
+  <div class="mobile-menu-panel" id="mobileMenuPanel">
+    <a href="#overview" onclick="closeMobileMenu()">Overview</a>
+    <a href="#roadmap" onclick="closeMobileMenu()">Roadmap</a>
+    <a href="#modules" onclick="closeMobileMenu()">Modules</a>
+    <a href="#study-tools" onclick="closeMobileMenu()">Study Tools</a>
+    <a href="#method" onclick="closeMobileMenu()">Method</a>
+    <a href="https://vagabondigital.github.io/business-communication-roadmap/" class="mobile-menu-cta" target="_blank"
+      rel="noopener" onclick="closeMobileMenu()">Open Roadmap</a>
+  </div>
 
   <main>
 
@@ -3231,7 +3375,7 @@
           <div class="how-card">
             <div class="how-num">1</div>
             <div>
-              <div class="how-title">If you’re continuing</div>
+              <div class="how-title">If you’re new</div>
               <div class="how-desc">Start with the Roadmap. It identifies your real professional situations, goals, and
                 challenges, then recommends the strongest starting module. Open that module together in the first
                 session.</div>
@@ -3401,32 +3545,71 @@
     </div>
   </div>
 
-  <!-- ── AUDIO MODAL ─────────────────────────────────────── -->
-  <div class="audio-modal-overlay" id="audioModal" onclick="handleAudioOverlayClick(event)">
-    <div class="audio-modal-panel" role="dialog" aria-modal="true">
-      <div class="audio-modal-header">
-        <div>
-          <div class="audio-modal-title" id="audioModalTitle">Module Audio Overview</div>
-          <div class="audio-modal-sub">Podcast · Deep Dive</div>
-        </div>
-        <button class="modal-close" onclick="closeAudioModal()" aria-label="Close">
-          <svg width="14" height="14">
-            <use href="#s-x" />
-          </svg>
-        </button>
+  <!-- ── AUDIO DOCK ──────────────────────────────────────── -->
+  <div class="audio-dock" id="audioDock">
+    <div class="audio-dock-top">
+      <div>
+        <div class="audio-dock-title" id="audioModalTitle">Module Audio Overview</div>
+        <div class="audio-dock-sub">Podcast · Deep Dive</div>
       </div>
-      <div class="audio-modal-body">
-        <audio class="audio-player" controls preload="metadata" id="audioPlayer">
-          <source id="audioSource" src="" type="audio/mp4">
-          Your browser does not support the audio element.
-        </audio>
-        <div class="audio-modal-note">Each module audio overview is hosted on GitHub Pages and streams directly in your
-          browser.</div>
-      </div>
+      <button class="audio-dock-close" onclick="closeAudioModal()" aria-label="Close audio player">
+        <svg width="14" height="14">
+          <use href="#s-x" />
+        </svg>
+      </button>
     </div>
+
+    <audio class="audio-player" controls preload="metadata" id="audioPlayer">
+      <source id="audioSource" src="" type="audio/mp4">
+      Your browser does not support the audio element.
+    </audio>
   </div>
 
   <script>
+    /* ── MOBILE MENU ──────────────────────────────── */
+    function toggleMobileMenu() {
+      var panel = document.getElementById('mobileMenuPanel');
+      var overlay = document.getElementById('mobileMenuOverlay');
+      var btn = document.querySelector('.mobile-menu-btn');
+
+      if (!panel) return;
+
+      var isOpen = !panel.classList.contains('open');
+
+      panel.classList.toggle('open', isOpen);
+      if (overlay) overlay.classList.toggle('open', isOpen);
+      document.body.classList.toggle('mobile-menu-open', isOpen);
+
+      if (btn) btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+
+    function closeMobileMenu() {
+      var panel = document.getElementById('mobileMenuPanel');
+      var overlay = document.getElementById('mobileMenuOverlay');
+      var btn = document.querySelector('.mobile-menu-btn');
+
+      if (panel) panel.classList.remove('open');
+      if (overlay) overlay.classList.remove('open');
+      document.body.classList.remove('mobile-menu-open');
+
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    }
+
+    document.addEventListener('click', function (e) {
+      var panel = document.getElementById('mobileMenuPanel');
+      var btn = document.querySelector('.mobile-menu-btn');
+
+      if (!panel || !btn) return;
+
+      if (panel.classList.contains('open') && !panel.contains(e.target) && !btn.contains(e.target)) {
+        closeMobileMenu();
+      }
+    });
+
+    document.querySelectorAll('#mobileMenuPanel a').forEach(function (link) {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
     /* ── MODULE FILTER ─────────────────────────────── */
     function filterModules(arc, btn) {
       document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
@@ -3481,28 +3664,25 @@
       if (e.target === document.getElementById('methodModal')) closeMethodModal();
     }
 
-    /* ── AUDIO MODAL ───────────────────────────────── */
+    /* ── AUDIO DOCK ────────────────────────────────── */
     function openAudio(filename, title) {
       document.getElementById('audioModalTitle').textContent = title;
       document.getElementById('audioSource').src = filename;
       var player = document.getElementById('audioPlayer');
       player.load();
-      document.getElementById('audioModal').classList.add('open');
-      document.body.style.overflow = 'hidden';
+      document.getElementById('audioDock').classList.add('open');
     }
+
     function closeAudioModal() {
-      document.getElementById('audioModal').classList.remove('open');
-      document.body.style.overflow = '';
+      document.getElementById('audioDock').classList.remove('open');
       var player = document.getElementById('audioPlayer');
       player.pause();
-    }
-    function handleAudioOverlayClick(e) {
-      if (e.target === document.getElementById('audioModal')) closeAudioModal();
     }
 
     /* ── ESCAPE KEY ────────────────────────────────── */
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
+        closeMobileMenu();
         closeMethodModal();
         closeAudioModal();
       }
